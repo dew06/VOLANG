@@ -1,26 +1,28 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import {upsertStreamUser} from "../lib/stream.js";
+import { generateStreamToken } from "../lib/stream.js";
 
 export async function signup(req,res){
     const {email,password,fullName} = req.body;
 
     try{
         if(!email || !password || !fullName){
-            return res.status(400).jason({message: "All fields are required"});
+            return res.status(400).json({message: "All fields are required"});
         }
 
         if(password.length < 6){
-            return res.status(400).jason({message: "Password must be atleast 6 charactors"});
+            return res.status(400).json({message: "Password must be atleast 6 charactors"});
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if(!emailRegex.test(email)){
-            return res.status(400).jason({message: "Invalid email format"});
+            return res.status(400).json({message: "Invalid email format"});
         }
 
         const existingUser = await User.findOne({email});
         if(existingUser){
-            return res.status(400).jason({message: "Email already exists"});
+            return res.status(400).json({message: "Email already exists"});
         }
 
         const idx = Math.floor(Math.random()*100)+1;
@@ -45,7 +47,7 @@ export async function signup(req,res){
 
         
         
-        const token = jwt.sign({userID:newUser._id},process.env.JWT_SECRET_KEY,{
+        const token = jwt.sign({userId:newUser._id},process.env.JWT_SECRET_KEY,{
             expiresIn: "7d"
         })
 
@@ -83,7 +85,7 @@ export async function login(req,res){
             return res.status(401).json({message: "Invalid email or password"});
         }
 
-        const token = jwt.sign({userID:user._id},process.env.JWT_SECRET_KEY,{
+        const token = jwt.sign({userId:user._id},process.env.JWT_SECRET_KEY,{
             expiresIn: "7d"
         })
 
@@ -149,7 +151,7 @@ export async function onboard(req,res){
         
        }
 
-        res.status(200).json({success:true, user:updateUser});
+        res.status(200).json({success:true, user:updatedUser});
     } catch (error) {
         console.log("Error in onboard",error);
         res.status(500).json({message: "Internal server error"}); 
