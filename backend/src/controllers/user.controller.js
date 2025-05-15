@@ -16,14 +16,14 @@ export async function getRecommendedUsers(req, res) {
         })
         res.status(200).json( recommendedUsers);
     } catch (Error) {
-        console.error("error in getRecommendedUsers", error.message );
+        console.error("error in getRecommendedUsers", Error.message );
         res.status(500).json({message:"Internal Server Error"});
         
     }
 }
 export async function getMyFriends(req, res) {
     try {
-        const user = User.findById(req.user.id)
+        const user = await User.findById(req.user.id)
         .select("friends")
         .populate("friends", "fullName profilePic nativeLanguage learningLanguage");
         res.status(200).json(user.friends);
@@ -38,7 +38,7 @@ export async function sendFriendRequest(req, res) {
         const myId = req.user.id;
         const {id:recipientId} = req.params;
 
-        if(myId === recipientId) {
+        if(myId.toString() === recipientId.toString()) {
             return res.status(400).json({message:"You cannot send a friend request to yourself"});
         }
 
@@ -102,7 +102,7 @@ export async function acceptFriendRequest(req, res) {
         
     }
 }
-export async function getFriendRequest(req, res) {
+export async function getFriendRequests(req, res) {
     try {
         const incomingReqs = await FriendRequest.find({
             recipient: req.user.id,
