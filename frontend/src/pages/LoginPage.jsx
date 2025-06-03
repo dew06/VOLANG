@@ -19,7 +19,7 @@ const {loginMutation, isPending, error} = useLogin();
     loginMutation(loginData);
   }
   return(
-    <div className="h-screen flex justify-center items-center p-4 sm:p-6 md:p-8" data-theme="forest">
+    <div className="h-screen flex justify-center items-center p-4 sm:p-6 md:p-8" data-theme="coffee">
       <div className="border border-primary/25 flex flex-col lg:flex-row w-full max-w-5xl mx-auto bg-base-100 rounded-xl shadow-lg overflow-hidden">
       {/*Login Form*/}
       <div className="w-full lg:w-1/2 p-4 sm:p-8 flex flex-col">
@@ -43,7 +43,7 @@ const {loginMutation, isPending, error} = useLogin();
               <div>
                 <h2 className="text-xl font-semibold">Welcome Back!</h2>
                 <p className="text-sm opacity-70">
-                  Log in to your account and continue your language journey.
+                  Log in and continue your language journey
                 </p>
               </div>
 
@@ -112,9 +112,9 @@ const {loginMutation, isPending, error} = useLogin();
           </div>
 
           <div className="text-center space-y-3 mt-6">
-            <h2 className="text-xl font-semibold">Connect with the language partners worldwide</h2>
+            <h2 className="text-xl font-semibold">Engage with language partners around the globe</h2>
             <p className="opacity-70">
-              Practice conversations, make friends, and improve your language skills
+              Enhance your speaking skills, build friendships, and grow your language proficiency
             </p>
           </div>
         </div>
